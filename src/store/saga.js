@@ -17,8 +17,14 @@ function* getArrayStarShipsWithImg(starshipsData) {
 
 export function* getStarships(action) {
     try {
-        let starshipsData = yield call(getStarshipsData);
-        let starshipsWithImg = yield call(getArrayStarShipsWithImg, starshipsData);
+        let starshipsWithImg;
+        if (localStorage.getItem('starshipsWithImg') !== null) {
+            starshipsWithImg = JSON.parse(localStorage.getItem("starshipsWithImg"));
+        } else {
+            let starshipsData = yield call(getStarshipsData);
+            starshipsWithImg = yield call(getArrayStarShipsWithImg, starshipsData);
+            localStorage.setItem("starshipsWithImg", JSON.stringify(starshipsWithImg));
+        }
         yield put(acSetStarships(starshipsWithImg));
     } catch(e) {
         console.log(e);

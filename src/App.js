@@ -21,10 +21,9 @@ const App = ({starships, savedStarships, acGetStarships}) => {
     let filterStarships = savedStarships.filter((el) => el.name.indexOf(filterName) !== -1);
 
     useEffect(() => {
-            acGetStarships();
-            setTimeout(() => {
-                setIsLoaded(true);
-            }, 2000);
+        acGetStarships();
+        setTimeout(() => {
+            setIsLoaded(true);}, 2000);
         }, []
     );
   return (
