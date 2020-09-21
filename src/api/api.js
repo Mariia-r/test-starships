@@ -1,9 +1,12 @@
 import * as axios from "axios";
+import Unsplash, { toJson } from "unsplash-js";
+
+const unsplash = new Unsplash({
+    accessKey: "DL9x0rIqUjeiJxSTus8LBMSkhfvalJUyukVG-xhXiwU",
+});
 
 const headersRequest = {'Content-Type': 'application/json'};
 const swapUrl = 'https://swapi.dev/api/starships';
-const proxyServer = 'https://cors-anywhere.herokuapp.com/';
-const qwantUrl = 'api.qwant.com/api/search/';
 
 export const getStarshipsData = () => {
     return axios.get(swapUrl, {headers: headersRequest})
@@ -14,14 +17,10 @@ export const getStarshipsData = () => {
 };
 
 export const getStarshipsImg = (nameStarship) => {
-    return axios.get(`${proxyServer}${qwantUrl}images?q=${nameStarship}&t=images&safesearch=1&locale=en_US&uiv=4&count=1`, {
-        headers: {
-            'Content-type': 'text/plain',
-            'Access-Control-Allow-Origin' : 'http://localhost:3000',
-            'Access-Control-Allow-Methods': 'GET, OPTIONS'
-        }}).then(response => {
-            return response.data.data.result.items[0].media;
-        }).catch(error => {
-            console.log(error);
-    });
+    return unsplash.photos.getRandomPhoto({query: nameStarship, count: 1})
+        .then(toJson)
+        .then(json => {
+            return json[0].urls.small;
+        })
+        .catch(error => console.log(error));
 }
