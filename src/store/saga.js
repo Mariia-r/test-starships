@@ -6,13 +6,7 @@ function* getStarshipsWithImg(starshipsData) {
     try {
         let starshipsWithImg = [];
         yield all(starshipsData.map(function* (item, index) {
-            let starshipImg;
-            if (localStorage.getItem(`${item.name}-img`) !== (null || "undefined")) {
-                starshipImg = localStorage.getItem(`${item.name}-img`);
-            } else {
-                let starshipImg = yield call(getStarshipsImg, item.name);
-                localStorage.setItem(`${item.name}-img`, starshipImg);
-            }
+            let starshipImg = yield call(getStarshipsImg, item.name);
             starshipsWithImg.push({name: item.name, img: starshipImg});
         }));
         return starshipsWithImg;
